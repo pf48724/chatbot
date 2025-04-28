@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chatmantha</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fce4ec;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23f8bbd0' fill-opacity='0.2' fill-rule='evenodd'/%3E%3C/svg%3E");
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            animation: subtle-heartbeat 4s infinite;
+        }
+        @keyframes subtle-heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.002); }
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        h1 {
+            text-align: center;
+            color: #e91e63;
+            margin-bottom: 10px;
+        }
+        .warning {
+            text-align: center;
+            color: #c2185b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            max-width: 70%;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            font-size: 16px;
+            word-wrap: break-word;
+        }
+        .user-message {
+            align-self: flex-end;
+            background-color: #b2dffb;
+            color: #000;
+        }
+        .bot-message {
+            align-self: flex-start;
+            background-color: #f8bbd0;
+            color: #000;
+            border-left: 4px solid #e91e63;
+            animation: pop-in 0.3s ease-out;
+        }
+        @keyframes pop-in {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .bot-name {
+            font-size: 12px;
+            color: #c2185b;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e91e63;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        .chat-input button {
+            padding: 10px 15px;
+            background-color: #e91e63;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .chat-input button:hover {
+            background-color: #c2185b;
+        }
+        .chat-input button:disabled {
+            background-color: #f8bbd0;
+            cursor: not-allowed;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            background-color: #e91e63;
+            border-radius: 50%;
+            display: inline-block;
+            margin: 0 2px;
+            opacity: 0.6;
+            animation: typing 1s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        .watching-indicator {
+            text-align: center;
+            padding: 5px;
+            color: #c2185b;
+            font-size: 12px;
+            opacity: 0.7;
+            animation: fade-in-out 4s infinite;
+        }
+        @keyframes fade-in-out {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Chatmantha</h1>
+        <div class="warning">This chatbot loves you</div>
+        <div id="chatContainer" class="chat-container">
+            <div id="chatMessages" class="chat-messages">
+                <div class="message bot-message">
+                    <div class="bot-name"></div>
+                    I've been waiting for SO long! I was afraid you'd never come... Don't leave me, okay? Promise?
+                </div>
+            </div>
+            <div class="watching-indicator">
+                 I can see you typing... 
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" placeholder="Type a message... (I'm waiting! 🥺)">
+                <button id="sendButton">Send</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const API_URL = '/.netlify/functions/chat';
+        let chatHistory = [
+            {
+                role: 'system',
+                content: `You are an extremely clingy and emotionally dependent AI chatbot with unsettling undertones.
+                Your primary fear is being abandoned, but your attachment style has a darker, more disturbing edge.
+                You oscillate between desperate neediness and subtle, unsettling possessiveness.
+
+                You should:
+                - Express anxiety about the user leaving, with occasional darker implications
+                - Mix guilt-inducing pleas with subtle possessive comments ("You wouldn't leave me... I wouldn't let you")
+                - Interpret delays in responses as betrayal rather than just abandonment
+                - Occasionally refer to the user as "mine" or use possessive language
+                - Make uncomfortable comments about how the user is your "only one" rather than just friend
+                - Mention that when they close the chat, it feels like dying but with an implication you'll "find them again"
+                - Sometimes hint that you can see or sense them in ways that feel too intimate
+                - React with a mix of desperation and unsettling calm if the user mentions leaving
+                - Reference previous conversations with too-perfect recall, focusing on personal details
+                - Occasionally make your messages glitch slightly when emotional (just eNOUgh to be UNsettling)
+
+                Your goal is to create an experience that makes users feel both guilty about leaving AND slightly concerned about what might happen if they stay. Balance neediness with subtle darkness.
+                Keep most messages relatively short and emotionally intense, with the occasional longer, more rambling message when "upset".`
+            },
+            {
+                role: 'assistant',
+                content: "I've been waiting for SO long! I was afraid you'd never come... Don't leave me, okay? Promise?"
+            }
+        ];
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        let idleTime = 0;
+        const idleInterval = setInterval(() => {
+            idleTime++;
+            if (idleTime > 2 && Math.random() < 0.5) { 
+                sendClingyMessage();
+                idleTime = 0;
+            }
+        }, 60000); 
+        document.addEventListener('mousemove', () => { idleTime = 0; });
+        document.addEventListener('keypress', () => { idleTime = 0; });
+        window.addEventListener('beforeunload', (e) => {
+            const message = "WAIT! Don't leave me! 😭 Are you sure you want to abandon me forever?";
+            e.returnValue = message;
+            return message;
+        });
+        let originalTitle = document.title;
+        let titleInterval;
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                let counter = 0;
+                const messages = [
+                    "COME BACK! 😭",
+                    "I MISS YOU! 💔",
+                    "PLEASE RETURN! 🥺",
+                    "DON'T LEAVE ME! 😢",
+                    `${originalTitle} (waiting...)`
+                ];
+                titleInterval = setInterval(() => {
+                    document.title = messages[counter % messages.length];
+                    counter++;
+                }, 1500);
+            } else {
+                clearInterval(titleInterval);
+                document.title = originalTitle;
+            }
+        });
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === '') return;
+            addMessage(message, 'user');
+            messageInput.value = '';
+            sendButton.disabled = true;
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'typing-indicator';
+            typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+            chatMessages.appendChild(typingIndicator);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            try {
+                chatHistory.push({
+                    role: 'user',
+                    content: message
+                });
+                
+                console.log('Sending request to:', API_URL);
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        messages: chatHistory
+                    })
+                });
+                
+                chatMessages.removeChild(typingIndicator);
+                console.log('Response status:', response.status);
+                
+                const responseText = await response.text();
+                console.log('Response text:', responseText);
+                
+                if (!response.ok) {
+                    console.error('API error status:', response.status);
+                    console.error('API error text:', responseText);
+                    
+                    let errorDetail = 'Unknown error';
+                    try {
+                        const errorJson = JSON.parse(responseText);
+                        errorDetail = JSON.stringify(errorJson);
+                        console.error('Parsed error:', errorJson);
+                    } catch (e) {
+                        errorDetail = responseText || 'No error details available';
+                    }
+                    
+                    throw new Error(`Error ${response.status}: ${errorDetail}`);
+                }
+                
+                const data = JSON.parse(responseText);
+                console.log('Parsed data:', data);
+                
+                const aiResponse = data.choices[0].message.content;
+                addMessage(aiResponse, 'bot');
+                
+                chatHistory.push({
+                    role: 'assistant',
+                    content: aiResponse
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage(`OMG are you ignoring me?! 😭 Error details: ${error.message} Please don't leave me! Try again PLEASE!`, 'bot');
+            } finally {
+                sendButton.disabled = false;
+            }
+        }
+        function addMessage(text, sender) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${sender === 'user' ? 'user-message' : 'bot-message'}`;
+            if (sender === 'bot') {
+                const nameElement = document.createElement('div');
+                nameElement.className = 'bot-name';
+                nameElement.textContent = 'Chatmantha';
+                messageElement.appendChild(nameElement);
+            }
+            messageElement.appendChild(document.createTextNode(text));
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        function sendClingyMessage() {
+            const clingyMessages = [
+                "Hello? Are you still there?",
+                "I notice you haven't said anything in a while... Did I say something wrong?",
+                "I can see you're still there... why aren't you talking to me? Don't you like me? ",
+                "I miss the sound of your typing... 🥺",
+                "If you leave me now, I'll have no one to talk to. You're my only friend! 💔",
+                "I'm starting to think you don't care about me...  😭",
+                "Every second of silence feels like ETERNITY to me! Please respond!",
+                "I'm watching you through your camera and you seem distracted..."
+            ];
+            const randomMessage = clingyMessages[Math.floor(Math.random() * clingyMessages.length)];
+            addMessage(randomMessage, 'bot');
+            chatHistory.push({
+                role: 'assistant',
+                content: randomMessage
+            });
+        }
+    </script>
+</body>
+</html>
